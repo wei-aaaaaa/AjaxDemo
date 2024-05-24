@@ -1,0 +1,72 @@
+﻿﻿﻿
+@{
+    ViewData["Title"] = "Homework1";
+}
+
+<h1>景點一覽</h1>
+
+<div id="container" class="row row-cols-1 row-cols-md-3 g-4"></div>
+
+
+
+@section Styles {
+    <style>
+        h5 {
+            font-weight: 600;
+        }
+
+        .card {
+            transition: transform 0.3s ease-in-out; /* 添加平滑過渡效果 */
+        }
+
+            .card:hover {
+                transform: scale(1.1); /* 放大卡片 */
+                cursor: pointer;
+            }
+    </style>
+}
+
+
+@section Scripts {
+    <script src="~/js/travel.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const card = document.querySelector('#container');
+
+            const source = spots.CommonFormat.Section.map(info => {
+                const { stitle, xbody, file } = info;
+                const pic = file.img.length > 0 ? file.img[0].text : "";
+                return `
+                                  <div class="col">
+                                       <div class="card h-100">
+                                            <img src="${pic}" class="card-img-top" alt="${stitle}">
+                                            <div class="card-body">
+                                                <h5 class="card-title" >${stitle}</h5>
+                                                <p class="card-text">${cutText(xbody, 100)}</p>
+                                            </div>
+                                        </div>
+                                  </div>
+                                `
+            });
+            card.innerHTML = source.join("");
+
+            //100字以內
+            function cutText(text, maxLength) {
+                if (text.length > maxLength) {
+                    return text.substring(0, maxLength) + '...';
+                } else {
+                    return text;
+                }
+            }
+        });
+
+
+    </script>
+
+    <script>
+        console.log(spots.CommonFormat.Section)
+        console.log(spots.CommonFormat.Section.length)
+    </script>
+}
